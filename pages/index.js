@@ -3,7 +3,7 @@ import {useState} from 'react'
 import styles from '../styles/Home.module.css'
 import {Button, List} from 'antd'
 import CustomerModal from '../components/customerModal/component'
-
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Home() {
 
@@ -14,14 +14,16 @@ export default function Home() {
     setIsModalOpen(!isModalOpen);
   }
 
-  function handleSubmitCustomer(formData){
+  function handleCreateCustomer(formData){
 
     // save to database
 
     // SAVE TO LOCAL STATE
     // clone list
     const clonedCustomers = [...customers];
+
     const userData = {
+      id: uuidv4(formData.customerName) ,
       customerName: formData.customerName,
       phoneNumber: formData.phone
     } 
@@ -30,6 +32,16 @@ export default function Home() {
 
     // close modal
     toggleModal();
+  }
+
+  function handleDeleteCustomer(targetID){
+
+    const clonedCustomerList = customers.slice();
+    // delet target user
+    const updatedCustomerList = clonedCustomerList.filter(customer=>customer.id !== targetID)
+    // update the state with updated list
+    setCustomers(updatedCustomerList)
+
   }
 
   return (
@@ -41,21 +53,25 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-       <Button onClick={toggleModal}>Create customer</Button>
-        <CustomerModal isModalOpen={isModalOpen} onToggleModal={toggleModal} handleSubmitCustomer={handleSubmitCustomer}/>
-        <CustomersList customerData={customers}/>
+       <Button style={{marginBottom:'1em'}} onClick={toggleModal}>Create customer</Button>
+        <CustomerModal isModalOpen={isModalOpen} onToggleModal={toggleModal} handleCreateCustomer={handleCreateCustomer}/>
+        <div style={{width:'700px',border:'1px solid #e5e5e5', padding:'1em'}}>
+        <CustomersList onDeleteCustomer={handleDeleteCustomer} customerData={customers}/>
+        </div>
       </main>
     </div>
   )
 }
 
-function CustomersList({customerData}){
+function CustomersList({customerData, onDeleteCustomer}){
   return(
     <List
     itemLayout="horizontal"
-    dataSource={customerData}
+    dataSource={customerData} 
     renderItem={item => (
-      <List.Item>
+      <List.Item
+        actions={[<Button type='danger' onClick={()=>onDeleteCustomer(item.id)} key='delete-button'>Delete</Button>  ]}
+      >
         <List.Item.Meta
           title={item.customerName}
           description={item.phoneNumber}

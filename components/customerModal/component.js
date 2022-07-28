@@ -1,7 +1,7 @@
 import {Button,Modal,Form,Input} from 'antd'
 
 
-export default function CustomerModal({isModalOpen,onToggleModal,handleSubmitCustomer}){
+export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCustomer}){
     return(
       <Modal
       title="Create a new customer"
@@ -12,7 +12,7 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleSubmitCus
       footer={null}
       // width={1000}
     >
-      <ModalForm onSubmitCustomer={handleSubmitCustomer}/>
+      <ModalForm onSubmitCustomer={handleCreateCustomer}/>
     </Modal>
     )
   }
