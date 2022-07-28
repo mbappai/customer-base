@@ -1,23 +1,33 @@
 import Head from 'next/head'
 import {useState} from 'react'
 import styles from '../styles/Home.module.css'
-import {Button,Modal,Form,Input} from 'antd'
-import 'antd/dist/antd.css';
+import {Button, List} from 'antd'
+import CustomerModal from '../components/customerModal/component'
+
 
 export default function Home() {
 
   const [isModalOpen,setIsModalOpen] = useState(false);
-  const [customerList, setCustomerList] =  useState([]);
+  const [customers, setCustomers] =  useState([]);
 
   function toggleModal(){
     setIsModalOpen(!isModalOpen);
   }
 
-  function handleSubmitCustomer(customerData){
-    console.log(customerData)
+  function handleSubmitCustomer(formData){
 
     // save to database
-    // save to local state
+
+    // SAVE TO LOCAL STATE
+    // clone list
+    const clonedCustomers = [...customers];
+    const userData = {
+      customerName: formData.customerName,
+      phoneNumber: formData.phone
+    } 
+    clonedCustomers.push(userData);
+    setCustomers(clonedCustomers)
+
     // close modal
     toggleModal();
   }
@@ -33,59 +43,26 @@ export default function Home() {
       <main className={styles.main}>
        <Button onClick={toggleModal}>Create customer</Button>
         <CustomerModal isModalOpen={isModalOpen} onToggleModal={toggleModal} handleSubmitCustomer={handleSubmitCustomer}/>
+        <CustomersList customerData={customers}/>
       </main>
     </div>
   )
 }
 
-function CustomerModal({isModalOpen,onToggleModal,handleSubmitCustomer}){
+function CustomersList({customerData}){
   return(
-    <Modal
-    title="Create a new customer"
-    centered
-    visible={isModalOpen}
-    onOk={onToggleModal}
-    onCancel={onToggleModal}
-    footer={null}
-    // width={1000}
-  >
-    <ModalForm onSubmitCustomer={handleSubmitCustomer}/>
-  </Modal>
+    <List
+    itemLayout="horizontal"
+    dataSource={customerData}
+    renderItem={item => (
+      <List.Item>
+        <List.Item.Meta
+          title={item.customerName}
+          description={item.phoneNumber}
+        />
+      </List.Item>
+    )}
+  />
   )
 }
 
-
-function ModalForm({onSubmitCustomer}){
-  return(
-    <Form
-      layout='vertical'
-      name="customerForm"
-      initialValues={{ remember: true }}
-      onFinish={onSubmitCustomer}
-      autoComplete="off"
-    >
-      <Form.Item
-        label="customerName"
-        name="Customer Name"
-        rules={[{ required: true, message: 'Please input name of customer!' }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="phone"
-        label="Phone Number"
-        rules={[{ required: true, message: 'Please input customer phone number!' }]}
-      >
-        <Input addonBefore={'+234'} style={{ width: '100%' }} />
-      </Form.Item>
-
-
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-  )
-}
