@@ -1,10 +1,23 @@
-export default function handler(req,res){
+import {PrismaClient} from '@prisma/client'
+
+const prisma = new PrismaClient();
+
+export default async function handler(req,res){
 
     if(req.method == 'POST'){ 
-        // create a new customer
         const {id, customerName, phoneNumber} = JSON.parse(req.body);
-        console.log(id, customerName,phoneNumber);
-        res.status(200).json({message:'User created successfully'})
+        const result = await prisma.Customer.create({
+            data:{
+                name: customerName,
+                phoneNumber: phoneNumber
+            }
+        })
+        console.log(result)
+        // const customerData = await prisma.Customer.create({
+        //     data:{customerName,phoneNumber}
+        // });
+        // create a new customer
+        res.status(200).json({message:'User created!'})
         // createCustomer(customerData)
     }
     if(req.method == 'DELETE'){
