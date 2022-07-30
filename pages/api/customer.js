@@ -12,20 +12,26 @@ export default async function handler(req,res){
                 phoneNumber: phoneNumber
             }
         })
-        console.log(result)
-        // const customerData = await prisma.Customer.create({
-        //     data:{customerName,phoneNumber}
-        // });
         // create a new customer
-        res.status(200).json({message:'User created!'})
+        res.status(200).json({message:result})
         // createCustomer(customerData)
     }
+
     if(req.method == 'DELETE'){
+
         // delete customer
-        const id = req.body.id;
-        console.log(req.body)
+        const {id} = JSON.parse(req.body);
+        console.log(id)
+        // 
+        const deletedCustomer = await prisma.Customer.delete({
+            where: {
+              id: id,
+            },
+          }); 
+
+
         // query database and delete where id exist
-        res.status(200).json({message:'User deleted successfully'})
+        res.status(200).json({message:deletedCustomer})
     }
 }
 

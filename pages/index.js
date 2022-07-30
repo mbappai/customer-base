@@ -16,24 +16,28 @@ export default function Home() {
 
   function handleCreateCustomer(formData){
 
-    const userData = {
-      id: uuidv4(formData.customerName) , // can use cryptoJS to hash value to avoid duplicates
+    const payload = {
       customerName: formData.customerName,
       phoneNumber: formData.phone
     } 
     // save to database
     fetch('/api/customer',{
       method:'POST',
-      body: JSON.stringify(userData)
+      body: JSON.stringify(payload)
     })
     .then(res=>res.json())
-    .then(data=>console.log(data))
+    .then(data=>{
 
-    // clone local state
+      const {id,name,phoneNumber} = data.message
+
+
     const clonedCustomers = [...customers];
-    clonedCustomers.push(userData);
+    clonedCustomers.push({id,phoneNumber:phoneNumber,customerName:name});
     // update the state
     setCustomers(clonedCustomers)
+      console.log(data)
+    })
+    .catch(err=>console.log(err))
 
     // close modal
     toggleModal();
@@ -42,13 +46,14 @@ export default function Home() {
   function handleDeleteCustomer(targetID){
 
     const payload ={id:targetID}
-     // save to database
+
      fetch('/api/customer',{
       method:'DELETE',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload) 
     })
     .then(res=>res.json())
     .then(data=>console.log(data))
+    .catch(err=>console.log(err))
 
 
     const clonedCustomerList = customers.slice();
