@@ -11,9 +11,36 @@ datasource db {
 }
 
 model Customer {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name     String   @db.VarChar(255)
   phoneNumber  String @unique
+  topMeasurements TopMeasurement[]
+  bottomMeasurements BottomMeasurement[]
+}
+
+model TopMeasurement{
+  id String @id
+  type String
+  sleeve Int
+  shoulder Int
+  neck Int
+  cuff Int
+  chest Int
+  tummy Int
+  length Int
+  customer  Customer @relation(fields: [customerId], references: [id])
+  customerId String 
+}
+
+model BottomMeasurement{
+  id String @id
+  type String
+  lap Int
+  length Int
+  base Int
+  waist Int
+  customer  Customer @relation(fields: [customerId], references: [id])
+  customerId String
 }
