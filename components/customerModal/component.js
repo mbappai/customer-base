@@ -1,5 +1,5 @@
-import {Button,Modal,Form,Input,Select,Typography} from 'antd'
-
+import {Button,Modal,Form,Input,Select,Typography,Space} from 'antd'
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCustomer}){
     return(
@@ -19,13 +19,15 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
   
   const { Option } = Select;
   const {Title} = Typography;
+  const { TextArea } = Input;
+
 
   function ModalForm({onSubmitCustomer}){
     return(
       <Form
         layout='vertical'
         name="customerForm"
-        initialValues={{ remember: true }}
+        initialValues={{ remember: false }}
         onFinish={onSubmitCustomer}
         autoComplete="off"
       >
@@ -55,125 +57,17 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
   
         {/* measurement ================= */}
       
-        <Form.Item
-        name="topType"
-        label="Top type"
-        rules={[{ required: true, message: 'Please select type of style you want!' }]}
-      >
-        <Select placeholder="select your gender">
-          <Option value="kaftan">Kaftan</Option>
-          <Option value="agbada">Agbada</Option>
-          <Option value="short">Shortsleeve</Option>
-        </Select>
-      </Form.Item>
+        
 
 
 
       {/* ============== Shirt Measurements =================== */}
-
       <Title level={5}>Shirt Measurements</Title>
-
-    <div style={{display:'flex',width:'100%',justifyContent:'flex-start',flexWrap:'wrap',marginBottom:'1em'}}>
-      <Form.Item
-          name="sleeve"
-          label="Sleeve"
-          style={{ width:'30%',marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
-          >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
-      <Form.Item
-          name="shoulder"
-          label="Shoulder"
-          style={{ width:'30%',marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
-        >
-          <Input addonBefore={'CM'} style={{width:'100%' }} />
-        </Form.Item>
-      <Form.Item
-          name="neck"
-          label="Neck"
-          style={{ width:'30%',marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
-        >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
-      <Form.Item
-          name="chest"
-          label="Chest"
-          style={{ width:'30%',marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
-        >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
-      <Form.Item
-          name="cuff"
-          label="Cuff"
-          style={{ width:'30%',marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
-        >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
-      <Form.Item
-          name="tummy"
-          label="Tummy"
-          style={{ width:'30%',marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
-        >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
-      <Form.Item
-          name="length"
-          label="Length"
-          style={{ width:'30%',marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
-        >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
-      </div>
-
+      <TopMeasurementsForm/>
 
       {/* ============== bottom =================== */}
-
       <Title level={5}>Trouser Measurements</Title>
-
-<div style={{display:'flex',width:'100%',justifyContent:'flex-start',flexWrap:'wrap'}}>
-  <Form.Item
-      name="length"
-      label="Length"
-      style={{ width:'30%',marginRight:'10px' }}
-      rules={[{ required: true, message: 'Required!' }]}
-      >
-      <Input addonBefore={'CM'} style={{ width:'100%' }} />
-    </Form.Item>
-  <Form.Item
-      name="waist"
-      label="Waist"
-      style={{ width:'30%',marginRight:'10px' }}
-      rules={[{ required: true, message: 'Required!' }]}
-    >
-      <Input addonBefore={'CM'} style={{width:'100%' }} />
-    </Form.Item>
-  <Form.Item
-      name="lap"
-      label="Lap"
-      style={{ width:'30%',marginRight:'10px' }}
-      rules={[{ required: true, message: 'Required!' }]}
-    >
-      <Input addonBefore={'CM'} style={{ width:'100%' }} />
-    </Form.Item>
-  <Form.Item
-      name="base"
-      label="Base"
-      style={{ width:'30%',marginRight:'10px' }}
-      rules={[{ required: true, message: 'Required!' }]}
-    >
-      <Input addonBefore={'CM'} style={{ width:'100%' }} />
-    </Form.Item>
-  </div>
-
-
-
+      <BottomMeasurementsForm/>
   
         <Form.Item >
           <Button type="primary" htmlType="submit">
@@ -181,5 +75,194 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           </Button>
         </Form.Item>
       </Form>
+    )
+  }
+
+
+  function TopMeasurementsForm (){
+    return(
+      
+      <Form.List name="topMeasurements">
+      {(fields, { add, remove }) => (
+        <>
+          {fields.map(({ key, name, ...restField }) => (
+    <div key={key} style={{display:'flex',flexDirection:'column'}}>
+
+      <Form.Item
+        name={[name,'style']}
+        label="Style"
+        rules={[{ required: true, message: 'Please select a style!' }]}
+      >
+        <Select placeholder="Select style">
+          <Option value="kaftan">Kaftan</Option>
+          <Option value="agbada">Agbada</Option>
+          <Option value="short">Shortsleeve</Option>
+        </Select>
+      </Form.Item>
+
+      <div style={{display:'flex',width:'100%',justifyContent:'flex-start',flexWrap:'wrap' }}>
+
+        <Form.Item
+          {...restField}
+          name={[name, 'sleeve']}
+          label="Sleeve"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+          >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          {...restField}
+          name={[name, 'shoulder']}
+          label="Shoulder"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{width:'100%' }} />
+        </Form.Item>
+
+        <Form.Item
+         {...restField}
+          name={[name, 'neck']}
+          label="Neck"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          {...restField}
+          name={[name, 'chest']}
+          label="Chest"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+        <Form.Item
+         {...restField}
+          name={[name, 'cuff']}
+          label="Cuff"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          {...restField}
+          name={[name, 'tummy']}
+          label="Tummy"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          {...restField}
+          name={[name, 'length']}
+          label="Length"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+        <MinusCircleOutlined onClick={() => remove(name)} />
+
+      </div>
+
+      <Form.Item name={[name,'tailorsNote']} label="Tailors note">
+          <TextArea rows={2} />
+      </Form.Item>
+
+  </div>
+          ))}
+          <Form.Item>
+            <Button type="link" onClick={() => add()} icon={<PlusCircleOutlined />}>
+              Add shirt measurements
+            </Button>
+          </Form.Item>
+        </>
+      )}
+    </Form.List>
+    )
+  }
+
+  function BottomMeasurementsForm (){
+    return(
+      
+      <Form.List name="bottomMeasurements">
+      {(fields, { add, remove }) => (
+        <>
+          {fields.map(({ key, name, ...restField }) => (
+        <div key={key} style={{display:'flex',flexDirection:'column'}}>
+        
+
+            <div style={{display:'flex',width:'100%',justifyContent:'flex-start',flexWrap:'wrap'}}>
+
+      <Form.Item
+          {...restField}
+          name={[name, 'lap']}
+          label="Lap"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+      <Form.Item
+         {...restField}
+          name={[name, 'waist']}
+          label="Waist"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+      <Form.Item
+          {...restField}
+          name={[name, 'length']}
+          label="Length"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+         <Form.Item
+          {...restField}
+          name={[name, 'base']}
+          label="Base"
+          style={{ width:'22%' ,marginRight:'10px' }}
+          rules={[{ required: true, message: 'Required!' }]}
+        >
+          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+
+              <MinusCircleOutlined onClick={() => remove(name)} />
+            </div>
+
+
+      <Form.Item name={[name,'tailorsNote']} label="Tailors note">
+         <TextArea rows={2} />
+      </Form.Item>
+
+      </div>
+          ))}
+          <Form.Item>
+            <Button type="link" onClick={() => add()} icon={<PlusCircleOutlined />}>
+              Add trouser measurements
+            </Button>
+          </Form.Item>
+        </>
+      )}
+    </Form.List>
     )
   }

@@ -16,6 +16,7 @@ export default function Home() {
 
   function handleCreateCustomer(formData){
 
+    console.log(formData)
     const payload = {
       customerName: formData.customerName,
       phoneNumber: formData.phone
@@ -28,8 +29,7 @@ export default function Home() {
     .then(res=>res.json())
     .then(data=>{
 
-      const {id,name,phoneNumber} = data.message
-
+    const {id,name,phoneNumber} = data.message
 
     const clonedCustomers = [...customers];
     clonedCustomers.push({id,phoneNumber:phoneNumber,customerName:name});
