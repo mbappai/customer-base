@@ -21,7 +21,7 @@ model Customer {
 }
 
 model TopMeasurement{
-  id String @id
+  id String @id @default(uuid())
   type String
   sleeve Int
   shoulder Int
@@ -30,17 +30,19 @@ model TopMeasurement{
   chest Int
   tummy Int
   length Int
-  customer  Customer @relation(fields: [customerId], references: [id])
-  customerId String 
+  tailorsNote String 
+  customer  Customer? @relation(fields: [customerId], references: [id])
+  customerId String? 
 }
 
 model BottomMeasurement{
-  id String @id
+  id String @id @default(uuid())
   type String
   lap Int
   length Int
   base Int
   waist Int
+  tailorsNote String
   customer  Customer @relation(fields: [customerId], references: [id])
   customerId String
 }

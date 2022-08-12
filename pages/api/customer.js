@@ -5,11 +5,30 @@ const prisma = new PrismaClient();
 export default async function handler(req,res){
 
     if(req.method == 'POST'){ 
-        const {id, customerName, phoneNumber} = JSON.parse(req.body);
+        const {id, customerName, phoneNumber,topMeasurements,bottomMeasurements} = JSON.parse(req.body);
+        console.log('top',topMeasurements)
         const result = await prisma.Customer.create({
             data:{
                 name: customerName,
-                phoneNumber: phoneNumber
+                phoneNumber: phoneNumber,
+                topMeasurements: {
+                   create: [
+                    {
+                           type: 'agbada',
+                            sleeve: 32,
+                            shoulder: 23,
+                            neck: 32,
+                            cuff: 43,
+                            chest: 43,
+                            tummy: 43,
+                            length: 43,
+                            tailorsNote: 'Made for the best client',
+                            } 
+                   ]
+                }
+            },
+            include:{
+                topMeasurements: true
             }
         })
         // create a new customer
@@ -21,17 +40,35 @@ export default async function handler(req,res){
 
         // delete customer
         const {id} = JSON.parse(req.body);
-        console.log(id)
-        // 
-        const deletedCustomer = await prisma.Customer.delete({
+        console.log(typeof id)
+
+        // delete everything about a customer
+        const deleteTopMeasurement = prisma.topMeasurement.deleteMany({
+            where:{
+                customerId: id
+            }
+        })
+        console.log('in delete',deleteTopMeasurement)
+
+        // console.log(prisma.topMeasurement)
+
+        const deletedCustomer =  prisma.customer.delete({
             where: {
               id: id,
             },
           }); 
+        
+        console.log('customer',deletedCustomer)
 
+          const transaction = await prisma.$transaction([deleteTopMeasurement,deletedCustomer])
+
+        // console.log(deleteTopMeasurement)
+        // console.log(deletedCustomer)
+ 
 
         // query database and delete where id exist
-        res.status(200).json({message:deletedCustomer})
+        res.status(200).json({message:transaction})
+        // res.status(200).json({message:deletedCustomer})
     }
 }
 

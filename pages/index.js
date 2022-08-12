@@ -19,29 +19,43 @@ export default function Home() {
     console.log(formData)
     const payload = {
       customerName: formData.customerName,
-      phoneNumber: formData.phone
+      phoneNumber: formData.phone,
+      bottomMeasurements: formData.bottomMeasurements || [],
+      topMeasurements: formData.topMeasurements || []
     } 
     // save to database
+    // TODO: convert fetch to an await instead
     fetch('/api/customer',{
-      method:'POST',
+      method:'POST', 
       body: JSON.stringify(payload)
     })
     .then(res=>res.json())
     .then(data=>{
 
-    const {id,name,phoneNumber} = data.message
+    const localStateData = data.message
+    console.log('data',data)
 
     const clonedCustomers = [...customers];
-    clonedCustomers.push({id,phoneNumber:phoneNumber,customerName:name});
+    clonedCustomers.push(localStateData);
     // update the state
     setCustomers(clonedCustomers)
-      console.log(data)
+      // console.log(data)
     })
     .catch(err=>console.log(err))
 
     // close modal
     toggleModal();
   }
+
+  // const saveCustomerToDB=async(formData)=>{
+
+  //   const res = await fetch('/api/customer',{
+  //     method:'POST',
+  //     body: JSON.stringify(formData)
+  //   })
+
+  //   const data = res.json()
+  // }
 
   function handleDeleteCustomer(targetID){
 
@@ -93,8 +107,8 @@ function CustomersList({customerData, onDeleteCustomer}){
         actions={[<Button type='danger' onClick={()=>onDeleteCustomer(item.id)} key='delete-button'>Delete</Button>  ]}
       >
         <List.Item.Meta
-          title={item.customerName}
-          description={item.phoneNumber}
+          title={`${item.name} — ${item.phoneNumber}`}
+          description={`Top measurements:${item.topMeasurements?.length} — Bottom measurements:${item.bottomMeasurements?.length}`}
         />
       </List.Item>
     )}

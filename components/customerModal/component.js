@@ -1,13 +1,16 @@
-import {Button,Modal,Form,Input,Select,Typography,Space} from 'antd'
+import {Button,Modal,Form,Input,Select,Typography, InputNumber} from 'antd'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
+// @param isModalOpen state that toggles the visibility of modal
+// @param onToggleModal function that toggles the visibility state of the modal
+// @param handleCreateCustomer collects entire form data to update local state and save to DB
 export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCustomer}){
     return(
       <Modal
       title="Create a new customer"
       centered
       visible={isModalOpen}
-      onOk={onToggleModal}
+      onOk={onToggleModal} 
       onCancel={onToggleModal}
       footer={null}
       // width={1000}
@@ -107,9 +110,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'sleeve']}
           label="Sleeve"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
           >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
         <Form.Item
@@ -117,9 +119,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'shoulder']}
           label="Shoulder"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{width:'100%' }} />
         </Form.Item>
 
         <Form.Item
@@ -127,19 +128,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'neck']}
           label="Neck"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
-
-        <Form.Item
-          {...restField}
-          name={[name, 'chest']}
-          label="Chest"
-          style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
-        >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
         <Form.Item
@@ -147,9 +137,17 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'cuff']}
           label="Cuff"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          {...restField}
+          name={[name, 'chest']}
+          label="Chest"
+          style={{ width:'22%' ,marginRight:'10px' }}
+        >
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
         <Form.Item
@@ -157,9 +155,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'tummy']}
           label="Tummy"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
         <Form.Item
@@ -167,9 +164,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'length']}
           label="Length"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
         <MinusCircleOutlined onClick={() => remove(name)} />
@@ -210,9 +206,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'lap']}
           label="Lap"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
       <Form.Item
@@ -220,9 +215,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'waist']}
           label="Waist"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
       <Form.Item
@@ -230,9 +224,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'length']}
           label="Length"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
          <Form.Item
@@ -240,9 +233,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           name={[name, 'base']}
           label="Base"
           style={{ width:'22%' ,marginRight:'10px' }}
-          rules={[{ required: true, message: 'Required!' }]}
         >
-          <Input addonBefore={'CM'} style={{ width:'100%' }} />
+          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
         </Form.Item>
 
 
