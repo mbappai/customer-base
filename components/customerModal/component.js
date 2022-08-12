@@ -92,8 +92,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
     <div key={key} style={{display:'flex',flexDirection:'column'}}>
 
       <Form.Item
-        name={[name,'style']}
-        label="Style"
+        name={[name,'type']}
+        label="Shirt type"
         rules={[{ required: true, message: 'Please select a style!' }]}
       >
         <Select placeholder="Select style">

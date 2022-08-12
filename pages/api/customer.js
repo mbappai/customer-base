@@ -5,25 +5,14 @@ const prisma = new PrismaClient();
 export default async function handler(req,res){
 
     if(req.method == 'POST'){ 
-        const {id, customerName, phoneNumber,topMeasurements,bottomMeasurements} = JSON.parse(req.body);
-        console.log('top',topMeasurements)
+        const {customerName, phoneNumber,topMeasurements,bottomMeasurements} = JSON.parse(req.body);
         const result = await prisma.Customer.create({
             data:{
                 name: customerName,
                 phoneNumber: phoneNumber,
                 topMeasurements: {
                    create: [
-                    {
-                           type: 'agbada',
-                            sleeve: 32,
-                            shoulder: 23,
-                            neck: 32,
-                            cuff: 43,
-                            chest: 43,
-                            tummy: 43,
-                            length: 43,
-                            tailorsNote: 'Made for the best client',
-                            } 
+                    ...topMeasurements
                    ]
                 }
             },
