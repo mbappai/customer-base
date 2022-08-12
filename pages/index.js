@@ -1,11 +1,14 @@
 import Head from 'next/head'
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import styles from '../styles/Home.module.css'
 import {Button, List} from 'antd'
 import CustomerModal from '../components/customerModal/component'
 import { v4 as uuidv4 } from 'uuid';
+import {PrismaClient} from '@prisma/client'
 
-export default function Home() {
+const prisma = new PrismaClient();
+
+export default function Home({customerData}) {
 
   const [isModalOpen,setIsModalOpen] = useState(false);
   const [customers, setCustomers] =  useState([]);
@@ -47,19 +50,10 @@ export default function Home() {
     toggleModal();
   }
 
-  // const saveCustomerToDB=async(formData)=>{
+  const handleDeleteCustomer = async(targetID)=>{
 
-  //   const res = await fetch('/api/customer',{
-  //     method:'POST',
-  //     body: JSON.stringify(formData)
-  //   })
-
-  //   const data = res.json()
-  // }
-
-  function handleDeleteCustomer(targetID){
-
-    const payload ={id:targetID}
+    const payload = {id:targetID}
+    console.log(payload)
 
      fetch('/api/customer',{
       method:'DELETE',
@@ -77,6 +71,15 @@ export default function Home() {
     setCustomers(updatedCustomerList)
 
   }
+
+  useEffect(() => {
+    // set customer data to local state
+    // setCustomers({
+    //   ...customers,
+    //   ...customerData
+    // })
+    setCustomers(customerData)
+  }, [])
 
   return (
     <div className={styles.container}>
@@ -116,3 +119,13 @@ function CustomersList({customerData, onDeleteCustomer}){
   )
 }
 
+export async function getServerSideProps(){
+
+  const getAllCustomerData = await prisma.customer.findMany();
+
+  return {
+    props:{
+      customerData: JSON.parse(JSON.stringify(getAllCustomerData))
+    }
+  }
+}
