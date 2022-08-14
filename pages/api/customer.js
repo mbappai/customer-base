@@ -12,12 +12,18 @@ export default async function handler(req,res){
                 phoneNumber: phoneNumber,
                 topMeasurements: {
                    create: [
-                    ...topMeasurements
+                    ...topMeasurements,
+                   ]
+                },
+                bottomMeasurements: {
+                   create: [
+                    ...bottomMeasurements
                    ]
                 }
             },
             include:{
-                topMeasurements: true
+                topMeasurements: true,
+                bottomMeasurements: true
             }
         })
         // create a new customer

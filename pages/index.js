@@ -5,6 +5,7 @@ import {Button, List} from 'antd'
 import CustomerModal from '../components/customerModal/component'
 import { v4 as uuidv4 } from 'uuid';
 import {PrismaClient} from '@prisma/client'
+import CustomerProfile from '../components/customerProfile/customerProfile'
 
 const prisma = new PrismaClient();
 
@@ -12,6 +13,8 @@ export default function Home({customerData}) {
 
   const [isModalOpen,setIsModalOpen] = useState(false);
   const [customers, setCustomers] =  useState([]);
+  const [isProfileVisible, setIsProfileVisible] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState({})
 
   function toggleModal(){
     setIsModalOpen(!isModalOpen);
@@ -72,6 +75,17 @@ export default function Home({customerData}) {
 
   }
 
+  const handleViewProfile = (customerId) =>{
+    const customerData = customers.find(customer=>customer.id == customerId);
+    console.log(customerData)
+    setSelectedCustomer(customerData)
+    setIsProfileVisible(true)
+  }
+
+  const handleToggleProfile = () =>{
+    setIsProfileVisible(!isProfileVisible)
+  }
+
   useEffect(() => {
     // set customer data to local state
     // setCustomers({
@@ -93,14 +107,16 @@ export default function Home({customerData}) {
        <Button style={{marginBottom:'1em'}} onClick={toggleModal}>Create customer</Button>
         <CustomerModal isModalOpen={isModalOpen} onToggleModal={toggleModal} handleCreateCustomer={handleCreateCustomer}/>
         <div style={{width:'700px',border:'1px solid #e5e5e5', padding:'1em'}}>
-        <CustomersList onDeleteCustomer={handleDeleteCustomer} customerData={customers}/>
+        <CustomersList onViewProfile={handleViewProfile} onDeleteCustomer={handleDeleteCustomer} customerData={customers}/>
         </div>
       </main>
+
+      <CustomerProfile customerData={selectedCustomer} onToggleProfile={handleToggleProfile} isProfileVisible={isProfileVisible}/>
     </div>
   )
 }
 
-function CustomersList({customerData, onDeleteCustomer}){
+function CustomersList({customerData, onDeleteCustomer, onViewProfile}){
   return(
     <List
     itemLayout="horizontal"
@@ -110,7 +126,7 @@ function CustomersList({customerData, onDeleteCustomer}){
         actions={[<Button type='danger' onClick={()=>onDeleteCustomer(item.id)} key='delete-button'>Delete</Button>  ]}
       >
         <List.Item.Meta
-          title={`${item.name} — ${item.phoneNumber}`}
+          title={<div onClick={()=>onViewProfile(item.id)}>{`${item.name} — ${item.phoneNumber}`}</div>}
           description={`Top measurements:${item.topMeasurements?.length} — Bottom measurements:${item.bottomMeasurements?.length}`}
         />
       </List.Item>
@@ -121,7 +137,12 @@ function CustomersList({customerData, onDeleteCustomer}){
 
 export async function getServerSideProps(){
 
-  const getAllCustomerData = await prisma.customer.findMany();
+  const getAllCustomerData = await prisma.customer.findMany({
+    include:{
+      topMeasurements:true,
+      bottomMeasurements:true
+    }
+  });
 
   return {
     props:{

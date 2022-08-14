@@ -199,6 +199,18 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
         <div key={key} style={{display:'flex',flexDirection:'column'}}>
         
 
+      <Form.Item
+        name={[name,'type']}
+        label="Trouser type"
+        rules={[{ required: true, message: 'Please select a style!' }]}
+      >
+        <Select placeholder="Select style">
+          <Option value="kaftan">Kaftan</Option>
+          <Option value="agbada">Agbada</Option>
+          <Option value="short">Shortsleeve</Option>
+        </Select>
+      </Form.Item>
+
             <div style={{display:'flex',width:'100%',justifyContent:'flex-start',flexWrap:'wrap'}}>
 
       <Form.Item
@@ -208,16 +220,7 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           style={{ width:'22%' ,marginRight:'10px' }}
         >
           <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
-
-      <Form.Item
-         {...restField}
-          name={[name, 'waist']}
-          label="Waist"
-          style={{ width:'22%' ,marginRight:'10px' }}
-        >
-          <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
+      </Form.Item>
 
       <Form.Item
           {...restField}
@@ -226,20 +229,30 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
           style={{ width:'22%' ,marginRight:'10px' }}
         >
           <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
+      </Form.Item>
 
-         <Form.Item
-          {...restField}
-          name={[name, 'base']}
-          label="Base"
+      <Form.Item
+             {...restField}
+             name={[name, 'base']}
+             label="Base"
+             style={{ width:'22%' ,marginRight:'10px' }}
+           >
+             <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
+      </Form.Item>
+
+      <Form.Item
+         {...restField}
+          name={[name, 'waist']}
+          label="Waist"
           style={{ width:'22%' ,marginRight:'10px' }}
         >
           <InputNumber addonAfter={'CM'} style={{ width:'100%' }} />
-        </Form.Item>
+      </Form.Item>
 
 
-              <MinusCircleOutlined onClick={() => remove(name)} />
-            </div>
+      <MinusCircleOutlined onClick={() => remove(name)} />
+      
+      </div>
 
 
       <Form.Item name={[name,'tailorsNote']} label="Tailors note">
