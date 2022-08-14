@@ -196,9 +196,8 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
       {(fields, { add, remove }) => (
         <>
           {fields.map(({ key, name, ...restField }) => (
-        <div key={key} style={{display:'flex',flexDirection:'column'}}>
+     <div key={key} style={{display:'flex',flexDirection:'column'}}>
         
-
       <Form.Item
         name={[name,'type']}
         label="Trouser type"
@@ -211,7 +210,7 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
         </Select>
       </Form.Item>
 
-            <div style={{display:'flex',width:'100%',justifyContent:'flex-start',flexWrap:'wrap'}}>
+     <div style={{display:'flex',width:'100%',justifyContent:'flex-start',flexWrap:'wrap'}}>
 
       <Form.Item
           {...restField}
@@ -251,7 +250,7 @@ export default function CustomerModal({isModalOpen,onToggleModal,handleCreateCus
 
 
       <MinusCircleOutlined onClick={() => remove(name)} />
-      
+
       </div>
 
 

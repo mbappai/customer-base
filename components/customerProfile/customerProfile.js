@@ -1,7 +1,28 @@
-import {Drawer,Descriptions} from 'antd'                     
+import {useState} from 'react'
+import {Drawer,Descriptions,Button} from 'antd'                     
+import EditableProfile from './editableProfile';
 
 
-const CustomerProfile = ({customerData,isProfileVisible,onToggleProfile}) =>{
+const CustomerProfile = ({customerData,isProfileVisible,onToggleProfile,updateBottomMeasurement}) =>{
+
+
+    const [isEditMode,setIsEditMode] = useState(false);
+
+    const toggleEditMode = () =>{
+        setIsEditMode(!isEditMode)
+    }
+
+
+    return(
+        <Drawer title='Customer profile' width={540} placement="right" extra={<Button onClick={toggleEditMode} type='link'>Edit</Button>} closable={false} onClose={onToggleProfile} visible={isProfileVisible}>
+            {isEditMode?<EditableProfile updateBottomMeasurement={updateBottomMeasurement} customerData={customerData}/>:<ReadOnlyProfile customerData={customerData}/>}
+        </Drawer>
+    )
+}
+
+export default CustomerProfile
+
+const ReadOnlyProfile = ({customerData}) =>{
 
     const {
         name,
@@ -11,12 +32,8 @@ const CustomerProfile = ({customerData,isProfileVisible,onToggleProfile}) =>{
         bottomMeasurements = []
     } = customerData;
 
-    console.log(topMeasurements)
-
-
-    return(
-        <Drawer title='Customer profile' width={540} placement="right" closable={false} onClose={onToggleProfile} visible={isProfileVisible}>
-            <Descriptions column={1} title="Basic Info">
+   return( <>
+    <Descriptions column={1} title="Basic Info">
                 <Descriptions.Item label="Customer Name">{name}</Descriptions.Item>
                 <Descriptions.Item label="Phone Number">{phoneNumber}</Descriptions.Item>
                 <Descriptions.Item label="Email">{email||'mujahid.bappai@yahoo.com'}</Descriptions.Item>
@@ -43,8 +60,6 @@ const CustomerProfile = ({customerData,isProfileVisible,onToggleProfile}) =>{
                     return view
                 })}
             </Descriptions> 
-        </Drawer>
-    )
+    </>
+   )
 }
-
-export default CustomerProfile
