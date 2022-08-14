@@ -43,7 +43,7 @@ const BottomFormWithControls = ({measurement,updateBottomMeasurement}) =>{
         <Form
         form={form}
         layout='vertical'
-        name="customerForm"
+        name="bottomMeasurementForm"
         initialValues={{ remember: false }}
         onFinish={saveChanges}
         autoComplete="off"
@@ -53,7 +53,7 @@ const BottomFormWithControls = ({measurement,updateBottomMeasurement}) =>{
           label="Trouser type"
           rules={[{ required: true, message: 'Please select a style!' }]}
         >
-          <Select disabled={!canEdit} defaultValue={type||'kaftan'} placeholder="Select style">
+          <Select disabled={!canEdit} initialvalue={type||'kaftan'} placeholder="Select style">
             <Option value="kaftan">Kaftan</Option>
             <Option value="agbada">Agbada</Option>
             <Option value="short">Shortsleeve</Option>

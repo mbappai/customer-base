@@ -3,7 +3,7 @@ import {Drawer,Descriptions,Button} from 'antd'
 import EditableProfile from './editableProfile';
 
 
-const CustomerProfile = ({customerData,isProfileVisible,onToggleProfile,updateBottomMeasurement}) =>{
+const CustomerProfile = ({customerData,isProfileVisible,onToggleProfile,updateBottomMeasurement,updateTopMeasurement}) =>{
 
 
     const [isEditMode,setIsEditMode] = useState(false);
@@ -15,7 +15,7 @@ const CustomerProfile = ({customerData,isProfileVisible,onToggleProfile,updateBo
 
     return(
         <Drawer title='Customer profile' width={540} placement="right" extra={<Button onClick={toggleEditMode} type='link'>Edit</Button>} closable={false} onClose={onToggleProfile} visible={isProfileVisible}>
-            {isEditMode?<EditableProfile updateBottomMeasurement={updateBottomMeasurement} customerData={customerData}/>:<ReadOnlyProfile customerData={customerData}/>}
+            {isEditMode?<EditableProfile updateTopMeasurement={updateTopMeasurement} updateBottomMeasurement={updateBottomMeasurement} customerData={customerData}/>:<ReadOnlyProfile customerData={customerData}/>}
         </Drawer>
     )
 }

@@ -98,6 +98,18 @@ export default function Home({customerData}) {
     // update database with new change
   }
 
+  const updateTopMeasurement = (measurement) =>{
+    const clonedCustomerData = customers.slice()
+    const targetCustomer = clonedCustomerData.find(customer=>customer.id == measurement.customerId);
+    
+    const targetMeasurementIndex = targetCustomer.topMeasurements.findIndex(topMeasurement=>topMeasurement.id == measurement.id )
+    targetCustomer.topMeasurements[targetMeasurementIndex] = measurement;
+    console.log(clonedCustomerData);
+    // update local state
+    setCustomers(clonedCustomerData);
+    // update database with new change
+  }
+
   useEffect(() => {
     // set customer data to local state
     // setCustomers({
@@ -125,6 +137,7 @@ export default function Home({customerData}) {
 
       <CustomerProfile 
       updateBottomMeasurement={updateBottomMeasurement}
+      updateTopMeasurement={updateTopMeasurement}
       customerData={selectedCustomer}  
       onToggleProfile={handleToggleProfile} 
       isProfileVisible={isProfileVisible}
